@@ -1,8 +1,9 @@
 const express = require('express')
 const morgan = require('morgan')
+const path = require('path')
 const app = express()
-app.use(morgan('tiny'))
 app.use(express.json())
+app.use(express.static('dist'))
 
 morgan.token('body', (req) => {
     if (req.method === 'POST') {
@@ -79,6 +80,10 @@ app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     persons = persons.filter(p => p.id !== id)
     res.status(204).end()
+})
+
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
 })
 
 const PORT = process.env.PORT || 3001
