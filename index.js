@@ -1,7 +1,11 @@
+require('dotenv').config()
+
 const express = require('express')
 const morgan = require('morgan')
 const path = require('path')
 const app = express()
+const Person = require('./models/person')
+
 app.use(express.json())
 app.use(express.static('dist'))
 
@@ -26,7 +30,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    Person.find({}).then(persons => {
+        res.json(persons)
+    })
 })
 
 app.get('/api/persons/:id', (req, res) => {
@@ -61,19 +67,17 @@ app.post('/api/persons', (req, res) => {
         })
     }
 
-    const nameExists = persons.some(p => p.name === name)
-    if (nameExists) {
-        return res.status(400).json({ error: 'name must be unique' })
-    }
+    Person.findOne({ name }).then(existingPerson => {
+        if (existingPerson) {
+            return res.status(400).json({ error: 'name must be unique' })
+        }
 
-    const person = {
-        id: Math.floor(Math.random() * 1000000),
-        name,
-        number
-    }
+        const person = new Person({ name, number })
 
-    persons = persons.concat(person)
-    res.json(person)
+        person.save().then(savedPerson => {
+            res.json(savedPerson)
+        })
+    })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
