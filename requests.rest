@@ -9,3 +9,22 @@ Content-Type: application/json
   "name": "Marcio",
   "number": "98272878237"
 }
+
+### Delete one person (MongoDB)
+DELETE http://localhost:3001/api/persons/698e39c408fd9461540c36ae
+
+### Test malformatted id
+DELETE http://localhost:3001/api/persons/123 
+
+
+### Update a person 
+PUT http://localhost:3001/api/persons/69907fd18d1c159d34e88550
+Content-Type: application/json
+
+{
+  "name": "Marcio",
+  "number": 35991880775
+}
+
+### Request info
+GET http://localhost:3001/info
