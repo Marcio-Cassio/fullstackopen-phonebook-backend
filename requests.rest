@@ -6,12 +6,15 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Marcio",
-  "number": "98272878237"
+  "name": "Julia",
+  "number": "1234556"
 }
 
 ### Delete one person (MongoDB)
 DELETE http://localhost:3001/api/persons/698e39c408fd9461540c36ae
+
+### Test with id
+GET http://localhost:3001/api/persons/69907fd18d1c159d34e88550
 
 ### Test malformatted id
 DELETE http://localhost:3001/api/persons/123 
